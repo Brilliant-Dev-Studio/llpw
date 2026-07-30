@@ -1,26 +1,217 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #ed1c24;
+  --color-primary-light: #ff5252;
+  --color-primary-dark: #b30006;
+  --color-primary-contrast: #ffffff;
+
+  --color-secondary: #ffffff;
+  --color-secondary-light: #ffffff;
+  --color-secondary-dark: #f0f0f0;
+  --color-secondary-contrast: #1a1a1a;
+
+  --color-accent-gold: #daa520;
+  --color-accent-gold-light: #f4c430;
+  --color-accent-gold-dark: #b8860b;
+
+  --color-bg-default: #f8f9fa;
+  --color-bg-paper: #ffffff;
+  --color-bg-dark: #121212;
+
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #555555;
+  --color-text-disabled: #9e9e9e;
+  --color-text-hint: #b0b0b0;
+  --color-text-on-primary: #ffffff;
+
+  --color-success: #2e7d32;
+  --color-warning: #ed6c02;
+  --color-error: #d32f2f;
+  --color-info: #0288d1;
+
+  --color-border: #e0e0e0;
+  --color-border-red: #ed1c24;
+
+  --color-paper: #fbf6ea;
+  --color-hairline: #d8cba5;
+  --color-ink-soft: #6b5d45;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
+  --font-display: var(--font-fraunces);
+  --font-ledger: var(--font-plex-mono);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-contrast: var(--color-primary-contrast);
+
+  --color-secondary: var(--color-secondary);
+  --color-secondary-light: var(--color-secondary-light);
+  --color-secondary-dark: var(--color-secondary-dark);
+  --color-secondary-contrast: var(--color-secondary-contrast);
+
+  --color-accent-gold: var(--color-accent-gold);
+  --color-accent-gold-light: var(--color-accent-gold-light);
+  --color-accent-gold-dark: var(--color-accent-gold-dark);
+
+  --color-bg-default: var(--color-bg-default);
+  --color-bg-paper: var(--color-bg-paper);
+  --color-bg-dark: var(--color-bg-dark);
+
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-disabled: var(--color-text-disabled);
+  --color-text-hint: var(--color-text-hint);
+  --color-text-on-primary: var(--color-text-on-primary);
+
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+  --color-info: var(--color-info);
+
+  --color-border: var(--color-border);
+  --color-border-red: var(--color-border-red);
+
+  --color-paper: var(--color-paper);
+  --color-hairline: var(--color-hairline);
+  --color-ink-soft: var(--color-ink-soft);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg-default);
+  color: var(--color-text-primary);
+}
+
+@keyframes stamp-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes stamp-press {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-stamp-in {
+  animation: stamp-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.animate-stamp-press {
+  animation: stamp-press 0.35s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-stamp-in,
+  .animate-stamp-press {
+    animation: none;
+  }
+}
+
+.guilloche-bg {
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(
+      ellipse 900px 500px at 50% -10%,
+      rgba(218, 165, 32, 0.14) 0%,
+      rgba(218, 165, 32, 0) 70%
+    ),
+    radial-gradient(
+      ellipse 900px 600px at 90% 110%,
+      rgba(237, 28, 36, 0.08) 0%,
+      rgba(237, 28, 36, 0) 70%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%236b5d45' stroke-width='0.6' opacity='0.16'%3E%3Ccircle cx='0' cy='0' r='20'/%3E%3Ccircle cx='0' cy='0' r='32'/%3E%3Ccircle cx='0' cy='0' r='44'/%3E%3Ccircle cx='120' cy='0' r='20'/%3E%3Ccircle cx='120' cy='0' r='32'/%3E%3Ccircle cx='120' cy='0' r='44'/%3E%3Ccircle cx='0' cy='120' r='20'/%3E%3Ccircle cx='0' cy='120' r='32'/%3E%3Ccircle cx='0' cy='120' r='44'/%3E%3Ccircle cx='120' cy='120' r='20'/%3E%3Ccircle cx='120' cy='120' r='32'/%3E%3Ccircle cx='120' cy='120' r='44'/%3E%3Ccircle cx='60' cy='60' r='14'/%3E%3Ccircle cx='60' cy='60' r='26'/%3E%3Ccircle cx='60' cy='60' r='38'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:
+    100% 100%,
+    100% 100%,
+    120px 120px;
+  background-repeat: no-repeat, no-repeat, repeat;
+}
+
+.register-mark {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+}
+
+.register-mark::before,
+.register-mark::after {
+  content: "";
+  position: absolute;
+  background: var(--color-ink-soft);
+}
+
+.register-mark::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.register-mark::after {
+  top: 50%;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+.wax-seal {
+  background: radial-gradient(
+    circle at 34% 28%,
+    var(--color-primary-light) 0%,
+    var(--color-primary) 45%,
+    var(--color-primary-dark) 100%
+  );
+}
+
+.wax-seal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0) 30%
+  );
+  pointer-events: none;
+}
+
+.wax-drip {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--color-primary-dark);
+  z-index: -1;
+}
+
+.perforation {
+  background-image: radial-gradient(circle, var(--color-hairline) 2px, transparent 2px);
+  background-size: 14px 100%;
+  background-position: center;
+  background-repeat: repeat-x;
+  height: 4px;
 }

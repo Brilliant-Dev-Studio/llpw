@@ -108,7 +108,14 @@ export default function Home() {
               delay={i * 100}
               className="flex flex-col items-center gap-3"
             >
-              <div className="h-28 w-28 rounded-full border-2 border-accent-gold bg-bg-default" />
+              <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-accent-gold">
+                <Image
+                  src="/photo-1553642618-de0381320ff3.avif"
+                  alt={person.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <p className="font-semibold text-text-primary">{person.name}</p>
               <p className="text-sm font-medium text-primary">{person.role}</p>
               <p className="text-sm text-text-secondary">{person.bio}</p>
@@ -157,11 +164,6 @@ export default function Home() {
             Have a question about admissions, partnerships, or certificates?
             Reach out — we&apos;re happy to help.
           </p>
-          <div className="mx-auto mt-6 flex max-w-md flex-col gap-2 text-text-secondary">
-            <p>info@llpw-edu.com</p>
-            <p>+95 9xx xxx xxxx</p>
-            <p>Yangon</p>
-          </div>
           <ContactForm />
         </Reveal>
       </section>

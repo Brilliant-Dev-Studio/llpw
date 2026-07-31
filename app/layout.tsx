@@ -4,6 +4,7 @@ import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import ScrollToTop from "./components/ScrollToTop";
 import SmoothScroll from "./components/SmoothScroll";
+import CursorFollower from "./components/CursorFollower";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -56,6 +57,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />
+        <CursorFollower />
         <SiteHeader />
         {children}
         <SiteFooter />

@@ -4,6 +4,8 @@ import SmoothScroll from "./components/SmoothScroll";
 import SiteChrome from "./components/SiteChrome";
 import "./globals.css";
 
+
+
 const poppins = Poppins({
   variable: "--font-geist-sans",
   subsets: ["latin"],

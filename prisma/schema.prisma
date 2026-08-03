@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  schoolName  String
+  studentName String
+  rollNo      String
+  className   String
+  photoUrl    String?
+  createdAt   DateTime @default(now())
+}

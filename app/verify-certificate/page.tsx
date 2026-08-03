@@ -1,6 +1,49 @@
 "use client";
 
 import { useRef, useState } from "react";
+import jsQR from "jsqr";
+
+type Certificate = {
+  code: string;
+  schoolName: string;
+  studentName: string;
+  rollNo: string;
+  className: string;
+  photoUrl: string | null;
+};
+
+type Result =
+  | { status: "idle" }
+  | { status: "checking" }
+  | { status: "found"; certificate: Certificate }
+  | { status: "not-found" }
+  | { status: "no-qr" };
+
+async function decodeQrFromFile(file: File): Promise<string | null> {
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new window.Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = dataUrl;
+  });
+
+  const canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  ctx.drawImage(img, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const result = jsQR(imageData.data, imageData.width, imageData.height);
+  return result?.data ?? null;
+}
 
 export default function VerifyCertificatePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -9,7 +52,32 @@ export default function VerifyCertificatePage() {
   const [code, setCode] = useState("");
   const [pressed, setPressed] = useState(false);
   const [dragOver, setDragOver] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+  const [result, setResult] = useState<Result>({ status: "idle" });
+
+  const verifyCode = async (value: string) => {
+    if (!value) return;
+    setResult({ status: "checking" });
+    const res = await fetch(`/api/verify?code=${encodeURIComponent(value)}`);
+    const data = await res.json();
+    setResult(
+      data.found
+        ? { status: "found", certificate: data.certificate }
+        : { status: "not-found" },
+    );
+  };
+
+  const handleFile = async (file: File | undefined) => {
+    if (!file) return;
+    setFileName(file.name);
+    setResult({ status: "checking" });
+    const decoded = await decodeQrFromFile(file);
+    if (!decoded) {
+      setResult({ status: "no-qr" });
+      return;
+    }
+    setCode(decoded);
+    verifyCode(decoded);
+  };
 
   const pressSeal = () => {
     setPressed(true);
@@ -19,14 +87,7 @@ export default function VerifyCertificatePage() {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragOver(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file) setFileName(file.name);
-  };
-
-  const handleVerify = () => {
-    if (!code) return;
-    setVerifying(true);
-    window.setTimeout(() => setVerifying(false), 900);
+    handleFile(e.dataTransfer.files?.[0]);
   };
 
   return (
@@ -44,7 +105,7 @@ export default function VerifyCertificatePage() {
           }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          className={`rounded-sm border p-8 transition-colors sm:p-10 ${
+          className={`rounded-sm border p-5 transition-colors sm:p-10 ${
             dragOver ? "border-primary bg-primary/5" : "border-hairline"
           }`}
         >
@@ -91,7 +152,7 @@ export default function VerifyCertificatePage() {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+              onChange={(e) => handleFile(e.target.files?.[0])}
               className="hidden"
             />
 
@@ -119,7 +180,7 @@ export default function VerifyCertificatePage() {
               type="file"
               accept="image/*"
               capture="environment"
-              onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+              onChange={(e) => handleFile(e.target.files?.[0])}
               className="hidden"
             />
           </div>
@@ -134,19 +195,59 @@ export default function VerifyCertificatePage() {
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                placeholder="SR-XXXXXXXX"
+                placeholder="LLPW-XXXXXXXX"
                 className="rounded-sm border border-hairline bg-bg-default px-4 py-3 font-ledger tracking-widest text-text-primary shadow-[inset_0_1px_3px_rgba(0,0,0,0.12)] outline-none focus:border-primary"
               />
             </label>
             <button
               type="button"
-              onClick={handleVerify}
-              disabled={!code || verifying}
+              onClick={() => verifyCode(code)}
+              disabled={!code || result.status === "checking"}
               className="self-end rounded-sm bg-text-disabled px-6 py-3 font-ledger text-sm uppercase tracking-widest text-primary-contrast shadow-[inset_0_-2px_0_rgba(0,0,0,0.15)] transition-transform disabled:cursor-not-allowed enabled:bg-text-primary enabled:hover:bg-primary enabled:active:scale-95"
             >
-              {verifying ? "Checking…" : "Verify"}
+              {result.status === "checking" ? "Checking…" : "Verify"}
             </button>
           </div>
+
+          {result.status === "found" && (
+            <div className="mt-8 flex items-center gap-4 rounded-sm border border-success/30 bg-success/5 p-4">
+              {result.certificate.photoUrl && (
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-hairline">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={result.certificate.photoUrl}
+                    alt={result.certificate.studentName}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="text-left">
+                <p className="font-semibold text-success">
+                  Valid certificate
+                </p>
+                <p className="text-sm text-text-primary">
+                  {result.certificate.studentName} · Roll No{" "}
+                  {result.certificate.rollNo} · {result.certificate.className}
+                </p>
+                <p className="text-xs text-text-secondary">
+                  {result.certificate.schoolName}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {result.status === "not-found" && (
+            <p className="mt-8 rounded-sm border border-error/30 bg-error/5 p-4 text-center text-sm text-error">
+              No certificate matches this code.
+            </p>
+          )}
+
+          {result.status === "no-qr" && (
+            <p className="mt-8 rounded-sm border border-warning/30 bg-warning/5 p-4 text-center text-sm text-warning">
+              Couldn&apos;t find a QR code in that photo — try again or enter
+              the code manually.
+            </p>
+          )}
         </div>
       </div>
     </main>

@@ -31,8 +31,8 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="mx-auto mt-10 grid max-w-3xl overflow-hidden rounded-2xl border border-border shadow-[0_25px_60px_-25px_rgba(26,26,26,0.35)] md:grid-cols-5">
-      <div className="flex flex-col justify-between gap-8 bg-primary p-8 text-primary-contrast md:col-span-2">
+    <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 overflow-hidden rounded-2xl border border-border shadow-[0_25px_60px_-25px_rgba(26,26,26,0.35)] md:grid-cols-5">
+      <div className="flex flex-col justify-between gap-8 bg-primary p-6 text-primary-contrast sm:p-8 md:col-span-2">
         <div>
           <p className="font-ledger text-xs uppercase tracking-widest text-white/70">
             Get in touch
@@ -43,7 +43,7 @@ export default function ContactForm() {
         </div>
 
         <div className="flex flex-col gap-4 text-sm text-white/90">
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,9 +57,9 @@ export default function ContactForm() {
                 <path d="m3 7 9 6 9-6" />
               </svg>
             </span>
-            info@llpw-edu.com
+            <span className="min-w-0 break-all">info@llpw-edu.com</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,9 +72,9 @@ export default function ContactForm() {
                 <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8Z" />
               </svg>
             </span>
-            +95 9xx xxx xxxx
+            <span className="min-w-0 wrap-break-word">+95 9xx xxx xxxx</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +87,7 @@ export default function ContactForm() {
                 <path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
               </svg>
             </span>
-            Yangon
+            <span className="min-w-0 wrap-break-word">Yangon</span>
           </div>
         </div>
 
@@ -96,7 +96,7 @@ export default function ContactForm() {
         </p>
       </div>
 
-      <div className="bg-bg-paper p-8 md:col-span-3">
+      <div className="bg-bg-paper p-6 sm:p-8 md:col-span-3">
         {sent ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 py-8 text-center">
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-success/10 text-success">

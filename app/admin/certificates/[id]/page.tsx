@@ -76,7 +76,7 @@ export default async function CertificateDetailPage({
                 <span className="flex h-full w-full items-center justify-center font-ledger text-xl font-semibold text-text-disabled">
                   {certificate.studentName
                     .split(" ")
-                    .map((p) => p[0])
+                    .map((p: string) => p[0])
                     .slice(0, 2)
                     .join("")
                     .toUpperCase()}

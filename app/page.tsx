@@ -4,29 +4,29 @@ import Reveal from "./components/Reveal";
 
 const founders = [
   {
-    name: "U Aung Ko Ko",
+    name: "Dr Win Bo @ Sai Hsei Han Say",
+    role: "Rector",
+    photo: "/doctors/founder_1.jpg",
+  },
+  {
+    name: "Mr Sai Tun Thein and Mrs Nang Aye Lin",
     role: "Chairman",
-    bio: "Founded LLPW in 2010 with a mission to make disciplined, quality education accessible across Myanmar.",
+    photo: "/doctors/founder_2.png",
+    contain: true,
   },
   {
-    name: "Daw Su Su Hlaing",
-    role: "Co-Founder & Director",
-    bio: "Oversees academic development, shaping a curriculum that balances rigor with character building.",
-  },
-  {
-    name: "U Zaw Min Htet",
-    role: "Co-Founder & Board Member",
-    bio: "Leads partnerships and campus expansion, bringing LLPW's programs to more students every year.",
+    name: "Mr Sai Kyaw",
+    role: "Managing Director",
+    photo: "/doctors/founder_3.jpg",
   },
 ];
 
 const partners = [
-  "Golden Land Foundation",
-  "Bright Future Academy",
-  "Irrawaddy Tech Institute",
-  "Shwe Education Group",
-  "Yangon Youth Council",
-  "Mandalay Learning Trust",
+  { location: "Bangkok, Thailand", photo: "/partners/partner_one.jpg" },
+  { location: "London, England", photo: "/partners/partner_two.jpg", wide: true },
+  { location: "Paris, France", photo: "/partners/partner_three.jpg", wide: true },
+  { location: "Lashio, Myanmar", photo: "/partners/partner_four.jpg" },
+  { location: "Shan State, Myanmar", photo: "/partners/partner_five.jpg" },
 ];
 
 export default function Home() {
@@ -52,8 +52,10 @@ export default function Home() {
             LLPW International School University
           </h1>
           <p className="max-w-md text-lg text-white/85">
-            Building disciplined, future-ready students since 2010 — over
-            12,000 graduates across Myanmar.
+            Since 2019, LLPW International School &amp; University has been
+            committed to developing disciplined, capable, and future-ready
+            students through the values of hard work, discipline, and
+            excellence.
           </p>
           <div className="mt-2 flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
@@ -69,15 +71,20 @@ export default function Home() {
           <Reveal className="flex flex-1 flex-col gap-4 text-center md:text-left">
             <h2 className="text-3xl font-bold text-text-primary">About Us</h2>
             <p className="text-text-secondary">
-              LLPW International School University is Myanmar&apos;s pioneer
-              network of disciplined learning, founded in 2010. We combine a
-              rigorous academic curriculum with character-building programs,
-              helping students grow academically, socially, and personally.
+              Founded in 2019, LLPW International School &amp; University
+              believes that true education is reflected in behavior, speech,
+              and mindset.
             </p>
             <p className="text-text-secondary">
-              Today, LLPW runs 8 campuses across Yangon and Mandalay, serving
-              over 3,000 students with a faculty of 150+ teachers and
-              instructors.
+              We go beyond academic learning to build discipline, character,
+              confidence, and a strong sense of responsibility. Guided by our
+              core values of Hard Work, Discipline, and the Right Mindset, we
+              prepare students not only for academic success, but for success
+              in life.
+            </p>
+            <p className="text-text-secondary">
+              At LLPW, we educate the mind, shape character, and build the
+              future.
             </p>
           </Reveal>
           <Reveal delay={150} className="flex flex-1 items-center justify-center">
@@ -101,24 +108,37 @@ export default function Home() {
             The people behind LLPW&apos;s mission of hard work and discipline.
           </p>
         </Reveal>
-        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-8 sm:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-12 sm:grid-cols-3">
           {founders.map((person, i) => (
             <Reveal
               key={person.name}
               delay={i * 100}
-              className="flex flex-col items-center gap-3"
+              className="flex flex-col items-center gap-4"
             >
-              <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-accent-gold">
-                <Image
-                  src="/photo-1553642618-de0381320ff3.avif"
-                  alt={person.name}
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative h-80 w-64 shrink-0 p-1.5 shadow-[0_12px_30px_-8px_rgba(26,26,26,0.35)] sm:h-96 sm:w-72">
+                <div className="h-full w-full bg-linear-to-br from-accent-gold-light via-accent-gold to-accent-gold-dark p-0.75">
+                  <div className="relative h-full w-full overflow-hidden bg-bg-default ring-4 ring-paper">
+                    <Image
+                      src={person.photo}
+                      alt={person.name}
+                      fill
+                      className={
+                        person.contain
+                          ? "object-contain p-2"
+                          : "object-cover"
+                      }
+                    />
+                  </div>
+                </div>
               </div>
-              <p className="font-semibold text-text-primary">{person.name}</p>
-              <p className="text-sm font-medium text-primary">{person.role}</p>
-              <p className="text-sm text-text-secondary">{person.bio}</p>
+              <div className="flex flex-col items-center gap-1.5">
+                <p className="font-display text-xl italic text-text-primary">
+                  {person.name}
+                </p>
+                <span className="rounded-full bg-primary/10 px-4 py-1 font-ledger text-xs font-semibold uppercase tracking-widest text-primary">
+                  {person.role}
+                </span>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -137,20 +157,26 @@ export default function Home() {
         <div className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-6 sm:grid-cols-3">
           {partners.map((partner, i) => (
             <Reveal
-              key={partner}
+              key={partner.location}
               delay={i * 80}
-              className="flex flex-col gap-3 overflow-hidden rounded-xl border border-border"
+              className={`flex flex-col gap-3 overflow-hidden rounded-xl border border-border ${
+                partner.wide ? "col-span-2" : ""
+              }`}
             >
-              <div className="relative aspect-square w-full">
+              <div
+                className={`relative w-full bg-white p-4 ${
+                  partner.wide ? "aspect-video" : "aspect-square"
+                }`}
+              >
                 <Image
-                  src="/photo-1562774053-701939374585.avif"
-                  alt={partner}
+                  src={partner.photo}
+                  alt={partner.location}
                   fill
-                  className="object-cover"
+                  className="object-contain p-2"
                 />
               </div>
               <span className="pb-3 text-center text-sm font-medium text-text-secondary">
-                {partner}
+                {partner.location}
               </span>
             </Reveal>
           ))}

@@ -72,7 +72,7 @@ export default function ContactForm() {
                 <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8Z" />
               </svg>
             </span>
-            <span className="min-w-0 wrap-break-word">+95 9xx xxx xxxx</span>
+            <span className="min-w-0 wrap-break-word">+95 9975362219</span>
           </div>
           <div className="flex min-w-0 items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
@@ -87,7 +87,7 @@ export default function ContactForm() {
                 <path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
               </svg>
             </span>
-            <span className="min-w-0 wrap-break-word">Yangon</span>
+            <span className="min-w-0 wrap-break-word">Lashio</span>
           </div>
         </div>
 

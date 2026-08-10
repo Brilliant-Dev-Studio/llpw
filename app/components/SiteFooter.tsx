@@ -45,7 +45,7 @@ export default function SiteFooter() {
           </div>
           <div className="flex flex-col gap-3 text-sm">
             <a
-              href="tel:+959xxxxxxxx"
+              href="tel:+959975362219"
               className="flex items-center gap-3 hover:text-primary-contrast"
             >
               <svg
@@ -56,7 +56,7 @@ export default function SiteFooter() {
               >
                 <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8Z" />
               </svg>
-              +95 9xx xxx xxxx <span className="text-white/40">(9 AM – 5 PM)</span>
+              +95 9975362219 <span className="text-white/40">(9 AM – 5 PM)</span>
             </a>
             <a
               href="mailto:info@llpw-edu.com"
@@ -114,10 +114,10 @@ export default function SiteFooter() {
                   </svg>
                   LLPW International School
                 </p>
-                <p className="text-sm text-white/50">Yangon</p>
+                <p className="text-sm text-white/50">Lashio</p>
               </div>
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Yangon+Myanmar"
+                href="https://www.google.com/maps/search/?api=1&query=Lashio+Myanmar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 rounded-md bg-black/40 px-3 py-1.5 text-xs font-medium text-primary-contrast"
@@ -137,7 +137,7 @@ export default function SiteFooter() {
             </div>
             <iframe
               title="LLPW location"
-              src="https://www.google.com/maps?q=Yangon,Myanmar&output=embed"
+              src="https://www.google.com/maps?q=Lashio,Myanmar&output=embed"
               className="h-48 w-full grayscale invert"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

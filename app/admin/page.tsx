@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { logout } from "./actions";
 import DeleteButton from "./DeleteButton";
+import AdminNav from "./AdminNav";
 
 export const dynamic = "force-dynamic";
 
@@ -97,6 +98,7 @@ export default async function AdminDashboard({
             <h1 className="mt-1 font-display text-3xl italic text-text-primary">
               Certificates
             </h1>
+            <AdminNav active="certificates" />
           </div>
           <div className="flex items-center gap-3">
             <Link

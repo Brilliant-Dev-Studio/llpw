@@ -16,3 +16,26 @@ model Certificate {
   photoUrl    String?
   createdAt   DateTime @default(now())
 }
+
+model Event {
+  id        String       @id @default(cuid())
+  title     String
+  date      DateTime
+  createdAt DateTime     @default(now())
+  images    EventImage[]
+}
+
+model EventImage {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  url         String
+  key         String
+  width       Int
+  height      Int
+  blurDataUrl String
+  order       Int
+  createdAt   DateTime @default(now())
+
+  @@index([eventId])
+}

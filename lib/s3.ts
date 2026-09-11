@@ -1,4 +1,8 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectsCommand,
+} from "@aws-sdk/client-s3";
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -10,19 +14,38 @@ const s3 = new S3Client({
 
 const bucket = process.env.S3_BUCKET_NAME!;
 
-export async function uploadStudentPhoto(file: File, code: string) {
-  const extension = file.name.split(".").pop() || "jpg";
-  const key = `student-photos/${code}.${extension}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-
+export async function uploadBuffer(
+  buffer: Buffer,
+  key: string,
+  contentType: string,
+) {
   await s3.send(
     new PutObjectCommand({
       Bucket: bucket,
       Key: key,
       Body: buffer,
-      ContentType: file.type || "image/jpeg",
+      ContentType: contentType,
     }),
   );
 
   return `https://${bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+}
+
+export async function deleteObjects(keys: string[]) {
+  if (keys.length === 0) return;
+
+  await s3.send(
+    new DeleteObjectsCommand({
+      Bucket: bucket,
+      Delete: { Objects: keys.map((Key) => ({ Key })) },
+    }),
+  );
+}
+
+export async function uploadStudentPhoto(file: File, code: string) {
+  const extension = file.name.split(".").pop() || "jpg";
+  const key = `student-photos/${code}.${extension}`;
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  return uploadBuffer(buffer, key, file.type || "image/jpeg");
 }

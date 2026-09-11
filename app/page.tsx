@@ -1,5 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 import ContactForm from "./components/ContactForm";
+import EventCard from "./components/EventCard";
 import Reveal from "./components/Reveal";
 
 const founders = [
@@ -23,13 +26,19 @@ const founders = [
 
 const partners = [
   { location: "Bangkok, Thailand", photo: "/partners/partner_one.jpg" },
-  { location: "London, England", photo: "/partners/partner_two.jpg", wide: true },
-  { location: "Paris, France", photo: "/partners/partner_three.jpg", wide: true },
+  { location: "London, England", photo: "/partners/partner_two.jpg" },
+  { location: "Paris, France", photo: "/partners/partner_three.jpg" },
   { location: "Lashio, Myanmar", photo: "/partners/partner_four.jpg" },
   { location: "Shan State, Myanmar", photo: "/partners/partner_five.jpg" },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const latestEvents = await prisma.event.findMany({
+    orderBy: { date: "desc" },
+    take: 3,
+    include: { images: { orderBy: { order: "asc" }, take: 1 } },
+  });
+
   return (
     <main className="flex flex-col">
       <section
@@ -146,42 +155,136 @@ export default function Home() {
 
       <section
         id="partners"
-        className="scroll-mt-20 bg-bg-paper px-6 py-20 text-center"
+        className="scroll-mt-20 overflow-hidden bg-bg-paper py-20 text-center"
       >
-        <Reveal>
-          <h2 className="text-3xl font-bold text-text-primary">Partners</h2>
+        <Reveal className="px-6">
+          <span className="inline-flex items-center rounded-full border border-accent-gold/40 bg-accent-gold/10 px-4 py-1 font-ledger text-xs font-semibold uppercase tracking-widest text-accent-gold-dark sm:text-sm">
+            Worldwide Network
+          </span>
+          <h2 className="mt-4 font-display text-3xl italic text-text-primary sm:text-4xl">
+            Partners
+          </h2>
+          <div className="mt-3 flex items-center justify-center gap-3">
+            <span className="h-px w-10 bg-accent-gold/60" />
+            <span className="h-1.5 w-1.5 rotate-45 bg-accent-gold" />
+            <span className="h-px w-10 bg-accent-gold/60" />
+          </div>
           <p className="mx-auto mt-3 max-w-lg text-text-secondary">
             Organizations we work with to expand access to quality education.
           </p>
         </Reveal>
-        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-6 sm:grid-cols-3">
-          {partners.map((partner, i) => (
-            <Reveal
-              key={partner.location}
-              delay={i * 80}
-              className={`flex flex-col gap-3 overflow-hidden rounded-xl border border-border ${
-                partner.wide ? "col-span-2" : ""
-              }`}
-            >
+
+        <Reveal delay={150} className="relative mt-12">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-bg-paper to-transparent sm:w-40" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-bg-paper to-transparent sm:w-40" />
+          <div className="marquee-track flex w-max items-stretch gap-6 sm:gap-8">
+            {[...partners, ...partners].map((partner, i) => (
               <div
-                className={`relative w-full bg-white p-4 ${
-                  partner.wide ? "aspect-video" : "aspect-square"
-                }`}
+                key={`${partner.location}-${i}`}
+                className="group flex w-56 shrink-0 flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-[0_8px_24px_-14px_rgba(26,26,26,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-accent-gold/50 hover:shadow-[0_20px_38px_-16px_rgba(26,26,26,0.3)] sm:w-72"
               >
-                <Image
-                  src={partner.photo}
-                  alt={partner.location}
-                  fill
-                  className="object-contain p-2"
-                />
+                <div className="relative aspect-video w-full">
+                  <Image
+                    src={partner.photo}
+                    alt={partner.location}
+                    fill
+                    className="object-contain p-7 grayscale transition-all duration-500 group-hover:grayscale-0"
+                  />
+                </div>
+                <div className="flex items-center justify-center gap-1.5 border-t border-border px-4 py-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    className="h-3.5 w-3.5 shrink-0 text-accent-gold-dark"
+                  >
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <span className="font-ledger text-[11px] uppercase tracking-widest text-text-secondary">
+                    {partner.location}
+                  </span>
+                </div>
               </div>
-              <span className="pb-3 text-center text-sm font-medium text-text-secondary">
-                {partner.location}
-              </span>
-            </Reveal>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Reveal>
       </section>
+
+      {latestEvents.length > 0 && (
+        <section
+          id="events"
+          className="guilloche-bg relative scroll-mt-20 overflow-hidden border-t border-accent-gold/20 px-6 pb-16 pt-20 text-center"
+        >
+          <span className="register-mark left-4 top-4 opacity-40" />
+          <span className="register-mark right-4 top-4 opacity-40" />
+          <span className="register-mark bottom-4 left-4 opacity-40" />
+          <span className="register-mark bottom-4 right-4 opacity-40" />
+
+          <Reveal className="relative mx-auto flex max-w-2xl flex-col items-center gap-4">
+            <span className="rounded-full border border-accent-gold/40 bg-white/60 px-4 py-1 font-ledger text-xs font-semibold uppercase tracking-widest text-accent-gold-dark sm:text-sm">
+              LLPW Moments
+            </span>
+            <h2 className="font-display text-3xl italic text-text-primary sm:text-4xl">
+              Events
+            </h2>
+            <div className="flex items-center gap-3">
+              <span className="h-px w-10 bg-accent-gold/60" />
+              <span className="h-1.5 w-1.5 rotate-45 bg-accent-gold" />
+              <span className="h-px w-10 bg-accent-gold/60" />
+            </div>
+            <p className="max-w-lg text-text-secondary">
+              Moments from campus life — ceremonies, activities, and
+              milestones from LLPW.
+            </p>
+          </Reveal>
+
+          <div className="relative mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3">
+            {latestEvents.map((event, i) => (
+              <Reveal key={event.id} delay={i * 100}>
+                <EventCard
+                  priority={i === 0}
+                  accent={(["primary", "gold", "info"] as const)[i % 3]}
+                  event={{
+                    id: event.id,
+                    title: event.title,
+                    date: event.date,
+                    cover: event.images[0]
+                      ? {
+                          url: event.images[0].url,
+                          blurDataUrl: event.images[0].blurDataUrl,
+                        }
+                      : null,
+                  }}
+                />
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={200} className="relative mt-10">
+            <Link
+              href="/events"
+              className="inline-flex items-center gap-2 rounded-full border border-primary bg-white/60 px-6 py-2.5 text-sm font-semibold text-primary shadow-[0_6px_16px_-8px_rgba(26,26,26,0.25)] transition-colors hover:bg-primary hover:text-primary-contrast"
+            >
+              More Events
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="h-4 w-4"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </Link>
+          </Reveal>
+
+          <div className="perforation relative -mx-6 mt-16 opacity-70" />
+        </section>
+      )}
 
       <section id="contact" className="scroll-mt-20 px-6 py-20 text-center">
         <Reveal>

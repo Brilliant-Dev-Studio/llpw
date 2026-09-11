@@ -149,6 +149,70 @@ body {
   background-repeat: no-repeat, no-repeat, repeat;
 }
 
+.event-banner-bg {
+  background-color: var(--color-primary-dark);
+  background-image:
+    radial-gradient(
+      ellipse 720px 420px at 8% -15%,
+      rgba(244, 196, 48, 0.35) 0%,
+      rgba(244, 196, 48, 0) 70%
+    ),
+    radial-gradient(
+      ellipse 820px 520px at 105% 115%,
+      rgba(0, 0, 0, 0.45) 0%,
+      rgba(0, 0, 0, 0) 70%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23f4c430' stroke-width='0.75' opacity='0.2'%3E%3Cpath d='M32 4 L60 32 L32 60 L4 32 Z'/%3E%3Cpath d='M32 18 L46 32 L32 46 L18 32 Z'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(
+      120deg,
+      var(--color-primary-dark) 0%,
+      var(--color-primary) 45%,
+      #7a1015 75%,
+      var(--color-primary-dark) 100%
+    );
+  background-size:
+    100% 100%,
+    100% 100%,
+    64px 64px,
+    100% 100%;
+  background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+}
+
+.events-hero-bg {
+  background-color: var(--color-primary-dark);
+  background-image:
+    radial-gradient(
+      ellipse 640px 460px at 5% -10%,
+      rgba(244, 196, 48, 0.4) 0%,
+      rgba(244, 196, 48, 0) 70%
+    ),
+    radial-gradient(
+      ellipse 560px 420px at 100% 0%,
+      rgba(2, 136, 209, 0.32) 0%,
+      rgba(2, 136, 209, 0) 70%
+    ),
+    radial-gradient(
+      ellipse 780px 520px at 50% 130%,
+      rgba(237, 28, 36, 0.4) 0%,
+      rgba(237, 28, 36, 0) 70%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.75' opacity='0.16'%3E%3Cpath d='M32 4 L60 32 L32 60 L4 32 Z'/%3E%3Cpath d='M32 18 L46 32 L32 46 L18 32 Z'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(
+      120deg,
+      var(--color-primary-dark) 0%,
+      var(--color-primary) 40%,
+      #8a1a24 65%,
+      var(--color-primary-dark) 100%
+    );
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    64px 64px,
+    100% 100%;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat, no-repeat;
+}
+
 .register-mark {
   position: absolute;
   width: 14px;
@@ -214,4 +278,27 @@ body {
   background-position: center;
   background-repeat: repeat-x;
   height: 4px;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 34s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }

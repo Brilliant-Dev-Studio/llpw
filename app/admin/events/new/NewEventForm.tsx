@@ -1,27 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { createEvent } from "../actions";
 import GalleryDropzone from "./GalleryDropzone";
+
+// useFormStatus only reports pending state to descendants of the <form>,
+// so it can't be read directly in the component that renders the form.
+// This bridges it up to local state via the child's own render/effect cycle,
+// which (unlike a plain setState inside the action) isn't held back until
+// the action settles.
+function PendingWatcher({ onChange }: { onChange: (pending: boolean) => void }) {
+  const { pending } = useFormStatus();
+  useEffect(() => {
+    onChange(pending);
+  }, [pending, onChange]);
+  return null;
+}
 
 export default function NewEventForm() {
   const [submitting, setSubmitting] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
 
   const handleSubmit = async (formData: FormData) => {
-    setSubmitting(true);
     formData.delete("images");
     files.forEach((file) => formData.append("images", file));
-    try {
-      await createEvent(formData);
-    } finally {
-      setSubmitting(false);
-    }
+    await createEvent(formData);
   };
 
   return (
     <div className="relative mx-auto max-w-2xl">
       <form action={handleSubmit} className="flex flex-col gap-4">
+        <PendingWatcher onChange={setSubmitting} />
         <label className="flex flex-col gap-1.5">
           <span className="text-sm font-medium text-text-secondary">
             Event title

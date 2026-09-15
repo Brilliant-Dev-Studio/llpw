@@ -28,7 +28,7 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
 });
 
-const siteUrl = "https://llpw-edu.com";
+const siteUrl = "https://llpw.vercel.app";
 const siteName = "LLPW International School University";
 const description =
   "LLPW International School University in Lashio, Myanmar — developing disciplined, capable, and future-ready students since 2019 through Hard Work, Discipline, and the Right Mindset.";

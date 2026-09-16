@@ -39,3 +39,18 @@ model EventImage {
 
   @@index([eventId])
 }
+
+model Yearbook {
+  id          String   @id @default(cuid())
+  title       String
+  year        Int
+  coverUrl    String?
+  coverKey    String?
+  blurDataUrl String?
+  pdfUrl      String
+  pdfKey      String
+  fileSize    Int
+  createdAt   DateTime @default(now())
+
+  @@index([year])
+}

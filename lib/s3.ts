@@ -34,12 +34,19 @@ export async function uploadBuffer(
 export async function deleteObjects(keys: string[]) {
   if (keys.length === 0) return;
 
-  await s3.send(
+  // S3's bulk-delete API returns 200 even when individual keys fail (e.g.
+  // missing IAM permission) — it doesn't throw, so failures go silent
+  // unless the per-key Errors array is checked explicitly.
+  const result = await s3.send(
     new DeleteObjectsCommand({
       Bucket: bucket,
       Delete: { Objects: keys.map((Key) => ({ Key })) },
     }),
   );
+
+  if (result.Errors && result.Errors.length > 0) {
+    console.error("S3 deleteObjects: failed to delete some keys", result.Errors);
+  }
 }
 
 export async function uploadStudentPhoto(file: File, code: string) {

@@ -3,12 +3,13 @@ import Link from "next/link";
 const tabs = [
   { href: "/admin", label: "Certificates", key: "certificates" },
   { href: "/admin/events", label: "Events", key: "events" },
+  { href: "/admin/yearbooks", label: "Yearbooks", key: "yearbooks" },
 ] as const;
 
 export default function AdminNav({
   active,
 }: {
-  active: "certificates" | "events";
+  active: "certificates" | "events" | "yearbooks";
 }) {
   return (
     <nav className="mt-3 flex w-fit items-center gap-1 rounded-lg border border-hairline bg-paper/50 p-1">

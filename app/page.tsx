@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ContactForm from "./components/ContactForm";
 import EventCard from "./components/EventCard";
+import YearbookCard from "./components/YearbookCard";
 import Reveal from "./components/Reveal";
 
 const founders = [
@@ -37,6 +38,11 @@ export default async function Home() {
     orderBy: { date: "desc" },
     take: 3,
     include: { images: { orderBy: { order: "asc" }, take: 1 } },
+  });
+
+  const latestYearbooks = await prisma.yearbook.findMany({
+    orderBy: [{ year: "desc" }, { createdAt: "desc" }],
+    take: 4,
   });
 
   return (
@@ -283,6 +289,71 @@ export default async function Home() {
           </Reveal>
 
           <div className="perforation relative -mx-6 mt-16 opacity-70" />
+        </section>
+      )}
+
+      {latestYearbooks.length > 0 && (
+        <section
+          id="yearbooks"
+          className="scroll-mt-20 bg-bg-paper px-6 py-20 text-center"
+        >
+          <Reveal>
+            <span className="inline-flex items-center rounded-full border border-accent-gold/40 bg-accent-gold/10 px-4 py-1 font-ledger text-xs font-semibold uppercase tracking-widest text-accent-gold-dark sm:text-sm">
+              Alumni Library
+            </span>
+            <h2 className="mt-4 font-display text-3xl italic text-text-primary sm:text-4xl">
+              Yearbooks
+            </h2>
+            <div className="mt-3 flex items-center justify-center gap-3">
+              <span className="h-px w-10 bg-accent-gold/60" />
+              <span className="h-1.5 w-1.5 rotate-45 bg-accent-gold" />
+              <span className="h-px w-10 bg-accent-gold/60" />
+            </div>
+            <p className="mx-auto mt-3 max-w-lg text-text-secondary">
+              Every graduating class, bound and shelved — browse the books.
+            </p>
+          </Reveal>
+
+          <div className="mx-auto mt-12 max-w-5xl">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4">
+              {latestYearbooks.map((yearbook, i) => (
+                <Reveal key={yearbook.id} delay={i * 100}>
+                  <YearbookCard
+                    priority={i === 0}
+                    accent={(["primary", "gold", "info"] as const)[i % 3]}
+                    yearbook={{
+                      id: yearbook.id,
+                      title: yearbook.title,
+                      year: yearbook.year,
+                      cover: yearbook.coverUrl
+                        ? { url: yearbook.coverUrl, blurDataUrl: yearbook.blurDataUrl }
+                        : null,
+                    }}
+                  />
+                </Reveal>
+              ))}
+            </div>
+            <div className="shelf-plank mt-2 h-3 w-full rounded-sm" />
+          </div>
+
+          <Reveal delay={200} className="mt-10">
+            <Link
+              href="/yearbooks"
+              className="inline-flex items-center gap-2 rounded-full border border-primary px-6 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-contrast"
+            >
+              More Yearbooks
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="h-4 w-4"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </Link>
+          </Reveal>
         </section>
       )}
 
